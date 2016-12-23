@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Chat</title>
+    <link rel="stylesheet" type="text/css" href="/easyrtc/easyrtc.css" />
+    <link rel="stylesheet" type="text/css" href="/css/video_chat.css" />
+    <!-- Assumes global locations for socket.io.js and easyrtc.js -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
+    <script type="text/javascript" src="js/video_chat.js"></script>
+    <script>
+        window['__onGCastApiAvailable'] = function(isAvailable) {
+            if (isAvailable) {
+                console.log("Cast Available");
+                 var options = {};
+
+                // Set the receiver application ID to your own (created in the
+                // Google Cast Developer Console), or optionally
+                // use the chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
+                options.receiverApplicationId = '4F8B3483';
+
+                // Auto join policy can be one of the following three:
+                // ORIGIN_SCOPED - Auto connect from same appId and page origin
+                // TAB_AND_ORIGIN_SCOPED - Auto connect from same appId, page origin, and tab
+                // PAGE_SCOPED - No auto connect
+                options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+
+                cast.framework.CastContext.getInstance().setOptions(options);
+
+            }
+        };
+    </script>
+        <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  </head>
+  <body onload="connect();">
+        <div id="demoContainer">
+          <button is="google-cast-button"></button>
+          <div id="connectControls">
+            <div id="iam">Not yet connected...</div>
+            <br />
+            <strong>Connected users:</strong>
+            <div id="otherClients"></div>
+          </div>
+          <div id="videos"> 
+            <video autoplay="autoplay" class="easyrtcMirror" id="selfVideo" muted="muted" volume="0" ></video>
+            <!-- each caller video needs to be in it"s own div so it"s close button can be positioned correctly -->
+          </div>
+        </div>
+  </body>
+</html>
